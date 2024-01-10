@@ -1,9 +1,12 @@
 import sys, subprocess
 subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'flask'])
-from flask import Flask,render_template
+from flask import Flask,render_template,request,flash
 import os,json
-
+#
+if os.path.exists('env.py'):
+    import env
 app = Flask(__name__)
+app.secret_key =os.environ.get('SECRET_KEY')
 
 @app.route("/")
 def index(): # also called view
@@ -29,12 +32,16 @@ def about_member(member_name):
             if obj['url'] == member_name:
                 member = obj
 
-    return render_template('member.html', member=member)
+    return render_template('member.html', member=member,page_title=member['name'])
 
 
 
-@app.route("/contact")
+@app.route("/contact",methods=['GET','POST'])
 def contact():
+    if request.method == 'POST':#request.form.get('name') or request.form['name']
+        print(request.form.get('name'))
+        flash('Thanks {} we have recieved your message !'.format(request.form.get('name')))
+        print(request.form['name'])
     return render_template('contact.html', page_title="Contact")
 
 
