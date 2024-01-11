@@ -40,7 +40,7 @@ def about_member(member_name):
 def contact():
     if request.method == 'POST':#request.form.get('name') or request.form['name']
         print(request.form.get('name'))
-        flash('Thanks {} we have recieved your message !'.format(request.form.get('name')))
+        flash(f"Thanks {request.form.get('name')} we have recieved your message !")
         print(request.form['name'])
     return render_template('contact.html', page_title="Contact")
 
